@@ -1,0 +1,5 @@
+### .gitignore
+
+# iPython/Jupyter Notebook Checkpoints
+**.ipynb_checkpoints/
+__pycache__/

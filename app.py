@@ -27,7 +27,8 @@ def home():
     return(
         f"The following routes are available: <br/>"
         f'/api/v1.0/precipitation <br/>'
-        f'/api/v1.0/stations'
+        f'/api/v1.0/stations <br/>'
+        f'/api/v1.0/tobs'
         )
 
 @app.route("/api/v1.0/precipitation")
@@ -49,6 +50,14 @@ def stations():
     sesh.close()
     return jsonify(station_list)
 
+@app.route('/api/v1.0/tobs')
+def tobs():
+    import datetime as dt
+    start_date = dt.datetime(2016,8,18)
+    temps = sesh.query(precipitation.station, precipitation.date, precipitation.tobs).\
+    filter(precipitation.station == 'USC00519281', precipitation.date >= start_date).all()
+    temps_list = [{'station':temp[0], 'date':temp[1], 'temp':temp[2]} for temp in temps]
+    return jsonify(temps_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
